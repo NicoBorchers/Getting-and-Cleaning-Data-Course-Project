@@ -1,5 +1,6 @@
 # Getting and Cleaning Data : Course Project
 
+## Objective
 The purpose of this project is to demonstrate your ability to collect, work with, and clean a data set.
 
 Final product consists on an R script that does the following:
@@ -9,3 +10,12 @@ Final product consists on an R script that does the following:
 3. Uses descriptive activity names to name the activities in the data set
 4. Appropriately labels the data set with descriptive variable names.
 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+
+## Files contained in repository
+
+This repository contains the following files:
+
+1. README.md
+2. CodeBook.md
+3. run_analysis.R
+4. tidy_data.txt
