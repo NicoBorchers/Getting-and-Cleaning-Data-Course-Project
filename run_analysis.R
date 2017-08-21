@@ -1,5 +1,6 @@
 
 # Load required packages
+detach(package:plyr)
 library(dplyr)
 library(reshape)
 library(reshape2)
@@ -33,11 +34,9 @@ names(Y_train) <- "Activity_ID"
 X_train_mean_std <- X_train[,mean_std_cols_index]
 names(X_train_mean_std) <- mean_std_cols_names
 
-# Activity training data
-Activity_train <- merge(activity_labels, Y_train, by = "Activity_ID")
-
 # merge training data
-train_data <- cbind(subject_train, Activity_train, X_train_mean_std)
+train_data <- cbind(subject_train, Y_train, X_train_mean_std)
+train_data_final <- merge(train_data, activity_labels, by = "Activity_ID")
 
 
 # read test data
@@ -53,22 +52,19 @@ names(Y_test) <- "Activity_ID"
 X_test_mean_std <- X_test[,mean_std_cols_index]
 names(X_test_mean_std) <- mean_std_cols_names
 
-# Activity test data
-Activity_test <- merge(activity_labels, Y_test, by = "Activity_ID")
-
 # merge test data
-test_data <- cbind(subject_test, Activity_test, X_test_mean_std)
+test_data <- cbind(subject_test, Y_test, X_test_mean_std)
+test_data_final <- merge(test_data, activity_labels, by = "Activity_ID")
 
 # merge training and test data
-all_data <- rbind(train_data, test_data)
+all_data <- rbind(train_data_final, test_data_final)
 
 # tidy data and estimate average for each variable for each activity for each subject
 tidy_data <- all_data %>% 
   melt(id = c("subject_ID", "Activity_ID", "Activity_label")) %>%
-  select(- Activity_ID) %>%
   group_by(subject_ID, Activity_label, variable) %>%
-  summarise(average = mean(value))
+  summarize(average = mean(value))
 
 # write tidy data to txt
-write.table(tidy_data, "tidy_data.txt", sep="\t")
+write.table(tidy_data, "tidy_data.txt", row.name = FALSE)
 
